@@ -9,9 +9,18 @@
 //       Evaluate post algorithem
 //------------------------------------------------------------------
 #include <iostream>
+#include <string>
+#define max 10
 
 using namespace std;
 
+struct LN
+{
+	char a;
+	int x;
+};
+
+template <class T>
 class STACK
 {
 public:
@@ -19,52 +28,136 @@ public:
 	~STACK();
 	bool EmptyStack();
 	bool FullStack();
-	void PushStack(int x);
+	void PushStack(T x);
 	int PopStack();
+	char PeekStack(int i);
+	int LastItem();
 
 private:
-	int a[20];
+	T a[max];
 	int counter;
 };
 
-STACK::STACK()
+template <class T>
+STACK<T>::STACK()
 {
 	counter = 0;
 }
 
-bool STACK::EmptyStack()
+template <class T>
+bool STACK<T>::EmptyStack()
 {
 	return counter == 0 ? true : false;
 }
 
-bool STACK::FullStack()
+template <class T>
+bool STACK<T>::FullStack()
 {
-	return counter == 20 ? true : false;
+	return counter == max ? true : false;
 }
 
-void STACK::PushStack(int x)
+template <class T>
+void STACK<T>::PushStack(T x)
 {
 	a[counter] = x;
 	counter++;
 }
 
-int STACK::PopStack()
+template <class T>
+int STACK<T>::PopStack()
 {
 	--counter;
 	return a[counter];
 }
 
-STACK::~STACK()
+template <class T>
+char STACK<T>::PeekStack(int i) {
+	return a[i];
+}
+
+template <class T>
+int STACK<T>::LastItem() {
+	if (counter == 0) return counter;
+	return (counter - 1);
+}
+
+
+template <class T>
+STACK<T>::~STACK()
 {
+}
+
+
+bool isDuplicate(STACK<char> letter, char postfixLetter) {
+	for (int i = 0; i <= letter.LastItem(); ++i) {
+		if (letter.PeekStack(i) == postfixLetter) return true;
+	}
+	return false;
+}
+
+
+bool isLetter(char a) {
+	if ((a >= char('a') && a <= char('z')) || (a >= char('A') && a <= char('Z'))) return true;
+	return false;
+}
+
+void doArrithmatic(STACK<int> &number, char sign) {
+	 int a;
+	 switch (sign)
+	{
+	case '+':
+		a = number.PopStack() + number.PopStack();
+		number.PushStack(a);
+		break;
+	case '-':
+		 a = number.PopStack() - number.PopStack();
+		number.PushStack(a);
+		break;
+	case '*':
+		 a = number.PopStack() * number.PopStack();
+		number.PushStack(a);
+		break;
+	case '/':
+		a = number.PopStack() / number.PopStack();
+		number.PushStack(a);
+		break;
+	default:
+		
+		break;
+	}
+	
 }
 
 int main() {
 	char cont;
 	do
 	{
+		string postfix;
+		STACK<char> letters;
+		int value;
+		STACK<int> numbers;
+
+		cout << "\tEnter a postfix expression with a $ at the end: "; cin >> postfix;
+		
+		int i = 0;
+		
+		while(i < postfix.length() && postfix[i] != '$')
+		{
+			if (isLetter(postfix[i])) {
+				if (!isDuplicate(letters, postfix[i])) {
+					cout << "\t\tEnter the value of " << postfix[i] << ": "; cin >> value; numbers.PushStack(value);
+					letters.PushStack(postfix[i]);
+				}
+			}
+			else {
+				doArrithmatic(numbers, postfix[i]);
+			}
+			i++;
+		}
+		cout << "final value = " << numbers.PopStack() << endl;
 
 		cout << "Continue (y/n)? "; cin >> cont; cont = toupper(cont);
-		cin.ignore();
+		
 	} while (cont != 'N');
 
 	system("pause");
