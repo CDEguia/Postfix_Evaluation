@@ -50,12 +50,12 @@ int main() {
 	{
 		lettersNumbers = new LN[max];
 		STACK numbers;
-		
+
 		cout << "\tEnter a postfix expression with a $ at the end: "; cin >> postfix;
-		
+
 		int i = 0;
-		
-		while(i < postfix.length() && postfix[i] != '$')
+
+		while (i < postfix.length() && postfix[i] != '$')
 		{
 			if (isLetter(postfix[i])) {
 				if (!isDuplicate(lettersNumbers, postfix[i])) {
@@ -80,7 +80,7 @@ int main() {
 		cout << "final value = " << numbers.PopStack() << endl;
 
 		cout << "Continue (y/n)? "; cin >> cont; cont = toupper(cont);
-		
+
 		delete[] lettersNumbers;
 
 	} while (cont != 'N');
@@ -89,7 +89,6 @@ int main() {
 	return 0;
 }
 /*-- OUTPUT ------------------------------------------------------------
-
 ----------------------------------------------------------------------*/
 
 STACK::STACK()
