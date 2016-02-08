@@ -31,6 +31,7 @@ public:
 	void PushStack(T x);
 	int PopStack();
 	char PeekStack(int i);
+	void PrintStack();
 	int LastItem();
 
 private:
@@ -81,6 +82,14 @@ int STACK<T>::LastItem() {
 	return (counter - 1);
 }
 
+template <class T>
+void STACK<T>::PrintStack() {
+	int i = 0;
+	while( i < counter){
+		cout << i << " " << a[i] << endl;
+		i++;
+	}
+}
 
 template <class T>
 STACK<T>::~STACK()
@@ -133,6 +142,7 @@ int main() {
 	do
 	{
 		string postfix;
+		LN lettersNumbers[max];
 		STACK<char> letters;
 		int value;
 		STACK<int> numbers;
@@ -146,11 +156,26 @@ int main() {
 			if (isLetter(postfix[i])) {
 				if (!isDuplicate(letters, postfix[i])) {
 					cout << "\t\tEnter the value of " << postfix[i] << ": "; cin >> value; numbers.PushStack(value);
+					lettersNumbers[i].a = postfix[i];
+					lettersNumbers[i].x = value;
+					
 					letters.PushStack(postfix[i]);
+				}
+				else {
+					for (int p = 0; p < 10; p++) {
+						if (lettersNumbers[p].a == postfix[i]) {
+							numbers.PushStack(lettersNumbers[p].x);
+							
+							break;
+						}
+					}
 				}
 			}
 			else {
+				
 				doArrithmatic(numbers, postfix[i]);
+				
+				
 			}
 			i++;
 		}
