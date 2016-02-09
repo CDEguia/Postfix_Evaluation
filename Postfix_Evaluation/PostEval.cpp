@@ -42,13 +42,10 @@ void doArrithmatic(STACK &number, char sign);
 
 int main() {
 	char cont;
-	int value;
-	string postfix;
-	LN * lettersNumbers;
 
 	do
 	{
-		lettersNumbers = new LN[max];
+		string postfix;
 		STACK numbers;
 
 		cout << "\tEnter a postfix expression with a $ at the end: "; cin >> postfix;
@@ -57,6 +54,9 @@ int main() {
 
 		while (i < postfix.length() && postfix[i] != '$')
 		{
+			LN lettersNumbers[max] = {};
+			int value;
+			
 			if (isLetter(postfix[i])) {
 				if (!isDuplicate(lettersNumbers, postfix[i])) {
 					cout << "\t\tEnter the value of " << postfix[i] << ": "; cin >> value; numbers.PushStack(value);
@@ -80,8 +80,6 @@ int main() {
 		cout << "final value = " << numbers.PopStack() << endl;
 
 		cout << "Continue (y/n)? "; cin >> cont; cont = toupper(cont);
-
-		delete[] lettersNumbers;
 
 	} while (cont != 'N');
 
