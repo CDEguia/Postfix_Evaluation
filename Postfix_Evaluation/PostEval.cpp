@@ -61,12 +61,14 @@ private:
 	T a[max];
 	int counter;
 };
-
-bool isDuplicate(STACK<LN> letter, char postfixLetter) 
+bool isDuplicate(STACK<LN> letter, char postfixLetter, STACK<int> &number) 
 {
 	for (int b = 0; b <= letter.StackItems(); ++b) 
 	{
-		if (letter.PeekStack(b) == postfixLetter) return true;
+		if (letter.PeekStack(b) == postfixLetter) {
+			number.PushStack(letter.GetInt(b));
+			return true;
+		}
 	}
 	return false;
 }
@@ -74,35 +76,6 @@ bool isLetter(char a)
 {
 	if ((a >= char('a') && a <= char('z')) || (a >= char('A') && a <= char('Z'))) return true;
 	return false;
-}
-void doArrithmatic(STACK<int> &number, char sign)
-{
-	int a;
-	switch (sign)
-	{
-	case '+':
-		a = number.PopStack() + number.PopStack();
-		number.PushStack(a);
-		break;
-	case '-':
-		a = number.PopStack() - number.PopStack();
-		number.PushStack(a);
-		break;
-	case '*':
-		a = number.PopStack() * number.PopStack();
-		number.PushStack(a);
-		break;
-	case '/':
-		a = number.PopStack() / number.PopStack();
-		number.PushStack(a);
-		break;
-	case '$':
-		cout << "\t\t\tFinal value = " << number.PopStack() << endl;
-		break;
-	default:
-		cout << "ERROR\n";
-		break;
-	}
 }
 int main() {
 	char cont;
@@ -127,31 +100,37 @@ int main() {
 			
 			if (isLetter(postfix[i])) 
 			{
-				if (!isDuplicate(lettersNumbers, postfix[i])) 
+				if (!isDuplicate(lettersNumbers, postfix[i], numbers)) 
 				{
 					cout << "\t\tEnter the value of " << postfix[i] << ": "; cin >> value; numbers.PushStack(value);
 					lettersNumbers.PushStack(postfix[i], value);
 				}
-				else 
-				{
-					for (int p = 0; p <= lettersNumbers.StackItems(); p++)
-					{
-						if (lettersNumbers.PeekStack(p) == postfix[i]) 
-						{
-							numbers.PushStack(lettersNumbers.GetInt(p));
-							break;
-						}
-					}
-				}
 			}
 			else {
-				if (postfix[i] == '/' || postfix[i] == '*' || postfix[i] == '-' || postfix[i] == '+' || postfix[i] == '$') 
+				switch (postfix[i])
 				{
-					doArrithmatic(numbers, postfix[i]);
-				}
-				else 
-				{
-					cout << "Opperator not recognized!\n";
+					int first, second, num, den;
+				case '+':
+					numbers.PushStack(numbers.PopStack() + numbers.PopStack());
+					break;
+				case '-':
+					second = numbers.PopStack(); 
+					first = numbers.PopStack();
+					numbers.PushStack(first - second);
+					break;
+				case '*':
+					numbers.PushStack(numbers.PopStack() * numbers.PopStack());
+					break;
+				case '/':
+					den = numbers.PopStack(); 
+					num = numbers.PopStack();
+					numbers.PushStack(num / den);
+					break;
+				case '$':
+					cout << "\t\t\tFinal value = " << numbers.PopStack() << endl;
+					break;
+				default:
+					cout << "Opperation not recognized\n";
 					break;
 				}
 			}
