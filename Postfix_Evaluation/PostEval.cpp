@@ -83,27 +83,25 @@ int main() {
 		STACK<LN> lettersNumbers;		//Stores leter and number combinations
 										//get and store user input
 		cout << "\tEnter a postfix expression with a $ at the end: "; cin >> postfix;
-										//itterate through postfix expression
-		for (int i = 0; i < postfix.length(); ++i)		
-		{								//check if the user forgot the $
-			if (i == postfix.length() - 1 && postfix[i] != '$') 
-			{							//Add $ to string
-				postfix = postfix + '$';
-			}
-
-			int value;				//Declare variable for user variable values
-			if (isLetter(postfix[i]))	//Call to determin Letter or Symbol
+		if (postfix.back() != '$')		//check if the user forgot the $
+		{							
+			postfix += '$';				//Add $ to string
+		}
+		for (char i : postfix)			//itterate through postfix expression
+		{
+			int value;					//holds value for user variable
+			if (isLetter(i))			//Call to determin Letter or Symbol
 			{							//Determin if Letter is a duplicate
-				if (!isDuplicate(lettersNumbers, postfix[i], numbers)) 
+				if (!isDuplicate(lettersNumbers, i, numbers)) 
 				{						//Get value of postfix variable
-					cout << "\t\tEnter the value of " << postfix[i] << ": "; cin >> value; 
+					cout << "\t\tEnter the value of " << i << ": "; cin >> value; 
 					numbers.PushStack(value);	//Assign value to the stack
 									//Assign variable and value to the stack
-					lettersNumbers.PushStack(postfix[i], value);
+					lettersNumbers.PushStack(i, value);
 				}
 			}
 			else {
-				switch (postfix[i])		//Do Arrithmatic
+				switch (i)				//Do Arrithmatic
 				{
 					int first, second, num, den;
 				case '+':
