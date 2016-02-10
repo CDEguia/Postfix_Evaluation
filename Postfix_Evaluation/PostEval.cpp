@@ -28,10 +28,6 @@ public:
 	{
 		counter = 0;
 	}
-	~STACK()
-	{
-		counter = 0;
-	}
 	void PushStack(int n)
 	{
 		a[counter++] = n;
@@ -137,11 +133,27 @@ int main() {
 			i++;
 		}		
 		cout << "Continue (y/n)? "; cin >> cont; cont = toupper(cont);
+		cout << endl;
 	} while (cont != 'N');
 
 	system("pause");
 	return 0;
 }
 /*-- OUTPUT ------------------------------------------------------------
+        Enter a postfix expression with a $ at the end: ab*c+$
+                Enter the value of a: 2
+                Enter the value of b: 3
+                Enter the value of c: 4
+                        Final value = 10
+Continue (y/n)? y
+
+        Enter a postfix expression with a $ at the end: beef*++
+                Enter the value of b: 2
+                Enter the value of e: 3
+                Enter the value of f: 4
+                        Final value = 17
+Continue (y/n)? n
+
+Press any key to continue . . .
 ----------------------------------------------------------------------*/
 
