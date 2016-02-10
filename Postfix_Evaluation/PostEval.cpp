@@ -1,4 +1,4 @@
-//---------------------------------------------------------------
+//------------------------------------------------------------------------------
 //          Name		Candelario D. Eguia
 //          Course		CMPS-455
 //          Project		No.1
@@ -7,15 +7,15 @@
 //
 // This program displays:
 //       Evaluate post algorithems
-//------------------------------------------------------------------
+//------------------------------------------------------------------------------
 #include <iostream>
 #include <string>
 
-#define max 20
+#define max 10			//Maximum number of variable in the postfix experssion 
 
 using namespace std;
 
-struct LN{
+struct LN{				//for storing variable and value				
 	char c;
 	int x;
 };
@@ -26,30 +26,30 @@ class  STACK
 public:
 	STACK()
 	{
-		counter = 0;
+		counter = 0;				//stack/array location
 	}
-	void PushStack(int n)
+	void PushStack(int n)			//For calc and storage of postfix ints
 	{
 		a[counter++] = n;
 	}
-	void PushStack(char z, int n) 
+	void PushStack(char z, int n)	//Store for dupication checking
 	{
 		a[counter].c = z;
 		a[counter++].x = n;
 	}
-	int PopStack()
+	int PopStack()					//For postfix calculation
 	{
 		return a[--counter];
 	}
-	char PeekStack(int n)
+	char PeekStack(int n)			//Returns previously entered variables
 	{
 		return a[n].c;
 	}
-	int GetInt(int n)
+	int GetInt(int n)				//Returns previously entered integer data
 	{
 		return a[n].x;
 	}
-	int StackItems()
+	int StackItems()				//Returns the current end of stack location
 	{
 		return counter - 1;
 	}
@@ -60,50 +60,48 @@ private:
 bool isDuplicate(STACK<LN> letter, char postfixLetter, STACK<int> &number) 
 {
 	for (int b = 0; b <= letter.StackItems(); ++b) 
-	{
-		if (letter.PeekStack(b) == postfixLetter) {
-			number.PushStack(letter.GetInt(b));
-			return true;
+	{						//Compare previously saved Letters to current letter
+		if (letter.PeekStack(b) == postfixLetter) {	
+			number.PushStack(letter.GetInt(b));		//use old int
+			return true;				//if current letter is a duplicate
 		}
 	}
-	return false;
+	return false;						//if current letter is new
 }
 bool isLetter(char a) 
-{
+{						//Check to see if current variable is a letter or symbol
 	if ((a >= char('a') && a <= char('z')) || (a >= char('A') && a <= char('Z'))) return true;
-	return false;
+	return false;		//Returns false if it is not a letter
 }
 int main() {
 	char cont;
 	
 	do
 	{
-		string postfix;
-		STACK<int> numbers;
-		STACK<LN> lettersNumbers;
-
+		string postfix;					//Stores user postfix expression
+		STACK<int> numbers;				//Stores and holds final calculation
+		STACK<LN> lettersNumbers;		//Stores leter and number combinations
+										//get and store user input
 		cout << "\tEnter a postfix expression with a $ at the end: "; cin >> postfix;
-
-		int i = 0;
-
-		while (i < postfix.length())
+		if (postfix.back() != '$')		//check if the user forgot the $
+		{							
+			postfix += '$';				//Add $ to string
+		}
+		for (char i : postfix)			//itterate through postfix expression
 		{
-			if (i == postfix.length() - 1 && postfix[i] != '$') 
-			{
-				postfix = postfix + '$';
-			}
-			int value;
-			
-			if (isLetter(postfix[i])) 
-			{
-				if (!isDuplicate(lettersNumbers, postfix[i], numbers)) 
-				{
-					cout << "\t\tEnter the value of " << postfix[i] << ": "; cin >> value; numbers.PushStack(value);
-					lettersNumbers.PushStack(postfix[i], value);
+			int value;					//holds value for user variable
+			if (isLetter(i))			//Call to determin Letter or Symbol
+			{							//Determin if Letter is a duplicate
+				if (!isDuplicate(lettersNumbers, i, numbers)) 
+				{						//Get value of postfix variable
+					cout << "\t\tEnter the value of " << i << ": "; cin >> value; 
+					numbers.PushStack(value);	//Assign value to the stack
+									//Assign variable and value to the stack
+					lettersNumbers.PushStack(i, value);
 				}
 			}
 			else {
-				switch (postfix[i])
+				switch (i)				//Do Arrithmatic
 				{
 					int first, second, num, den;
 				case '+':
@@ -130,7 +128,6 @@ int main() {
 					break;
 				}
 			}
-			i++;
 		}		
 		cout << "Continue (y/n)? "; cin >> cont; cont = toupper(cont);
 		cout << endl;
