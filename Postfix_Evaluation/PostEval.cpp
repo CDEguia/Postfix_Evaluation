@@ -11,11 +11,11 @@
 #include <iostream>
 #include <string>
 
-#define max 10			//Maximum number of variable in the postfix experssion 
+#define max 10					//Maximum number of variable in the postfix experssion 
 
 using namespace std;
 
-struct LN{				//for storing variable and value				
+struct LN{									//for storing variable and value
 	char c;
 	int x;
 };
@@ -26,30 +26,30 @@ class  STACK
 public:
 	STACK()
 	{
-		counter = 0;				//stack/array location
+		counter = 0;						//stack/array location
 	}
-	void PushStack(int n)			//For calc and storage of postfix ints
+	void PushStack(int n)					//For calc and storage of postfix ints
 	{
 		a[counter++] = n;
 	}
-	void PushStack(char z, int n)	//Store for dupication checking
+	void PushStack(char z, int n)			//Store for dupication checking
 	{
 		a[counter].c = z;
 		a[counter++].x = n;
 	}
-	int PopStack()					//For postfix calculation
+	int PopStack()							//For postfix calculation
 	{
 		return a[--counter];
 	}
-	char PeekStack(int n)			//Returns previously entered variables
+	char PeekStack(int n)					//Returns previously entered variables
 	{
 		return a[n].c;
 	}
-	int GetInt(int n)				//Returns previously entered integer data
+	int GetInt(int n)						//Returns previously entered integer data
 	{
 		return a[n].x;
 	}
-	int StackItems()				//Returns the current end of stack location
+	int StackItems()						//Returns the current end of stack location
 	{
 		return counter - 1;
 	}
@@ -60,48 +60,48 @@ private:
 bool isDuplicate(STACK<LN> letter, char postfixLetter, STACK<int> &number) 
 {
 	for (int b = 0; b <= letter.StackItems(); ++b) 
-	{						//Compare previously saved Letters to current letter
+	{							//Compare previously saved Letters to current letter
 		if (letter.PeekStack(b) == postfixLetter) {	
 			number.PushStack(letter.GetInt(b));		//use old int
-			return true;				//if current letter is a duplicate
+			return true;						//if current letter is a duplicate
 		}
 	}
-	return false;						//if current letter is new
+	return false;								//if current letter is new
 }
 bool isLetter(char a) 
-{						//Check to see if current variable is a letter or symbol
+{								//Check to see if current variable is a letter or symbol
 	if ((a >= char('a') && a <= char('z')) || (a >= char('A') && a <= char('Z'))) return true;
-	return false;		//Returns false if it is not a letter
+	return false;								//Returns false if it is not a letter
 }
 int main() {
 	char cont;
 	
 	do
 	{
-		string postfix;					//Stores user postfix expression
-		STACK<int> numbers;				//Stores and holds final calculation
-		STACK<LN> lettersNumbers;		//Stores leter and number combinations
-										//get and store user input
+		string postfix;									//Stores user postfix expression
+		STACK<int> numbers;						//Stores and holds final calculation
+		STACK<LN> lettersNumbers;				//Stores leter and number combinations
+												//get and store user input
 		cout << "\tEnter a postfix expression with a $ at the end: "; cin >> postfix;
-		if (postfix.back() != '$')		//check if the user forgot the $
+		if (postfix.back() != '$')				//check if the user forgot the $
 		{							
-			postfix += '$';				//Add $ to string
+			postfix += '$';						//Add $ to string
 		}
-		for (char i : postfix)			//itterate through postfix expression
+		for (char i : postfix)					//itterate through postfix expression
 		{
-			int value;					//holds value for user variable
-			if (isLetter(i))			//Call to determin Letter or Symbol
-			{							//Determin if Letter is a duplicate
+			int value;							//holds value for user variable
+			if (isLetter(i))					//Call to determin Letter or Symbol
+			{									//Determin if Letter is a duplicate
 				if (!isDuplicate(lettersNumbers, i, numbers)) 
-				{						//Get value of postfix variable
+				{								//Get value of postfix variable
 					cout << "\t\tEnter the value of " << i << ": "; cin >> value; 
 					numbers.PushStack(value);	//Assign value to the stack
-									//Assign variable and value to the stack
+											//Assign variable and value to the stack
 					lettersNumbers.PushStack(i, value);
 				}
 			}
 			else {
-				switch (i)				//Do Arrithmatic
+				switch (i)						//Do Arrithmatic
 				{
 					int first, second, num, den;
 				case '+':
@@ -132,7 +132,6 @@ int main() {
 		cout << "Continue (y/n)? "; cin >> cont; cont = toupper(cont);
 		cout << endl;
 	} while (cont != 'N');
-
 	system("pause");
 	return 0;
 }
@@ -153,4 +152,3 @@ Continue (y/n)? n
 
 Press any key to continue . . .
 ----------------------------------------------------------------------*/
-
